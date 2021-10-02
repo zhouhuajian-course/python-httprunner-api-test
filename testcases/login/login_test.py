@@ -7,7 +7,7 @@ from httprunner import HttpRunner, Config, Step, RunRequest, RunTestCase
 
 class TestCaseLogin(HttpRunner):
 
-    config = Config("testcase description").verify(False)
+    config = Config("登录接口测试").verify(False)
 
     teststeps = [
         Step(
@@ -15,31 +15,16 @@ class TestCaseLogin(HttpRunner):
             .post("http://127.0.0.1:5000/api/login")
             .with_headers(
                 **{
-                    "Host": "127.0.0.1:5000",
-                    "Connection": "keep-alive",
-                    "Content-Length": "27",
-                    "Pragma": "no-cache",
-                    "Cache-Control": "no-cache",
-                    "sec-ch-ua": '"Chromium";v="94", "Google Chrome";v="94", ";Not A Brand";v="99"',
-                    "Accept": "application/json, text/javascript, */*; q=0.01",
-                    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-                    "X-Requested-With": "XMLHttpRequest",
-                    "sec-ch-ua-mobile": "?0",
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
-                    "sec-ch-ua-platform": '"Windows"',
-                    "Origin": "http://127.0.0.1:5000",
-                    "Sec-Fetch-Site": "same-origin",
-                    "Sec-Fetch-Mode": "cors",
-                    "Sec-Fetch-Dest": "empty",
-                    "Referer": "http://127.0.0.1:5000/",
-                    "Accept-Encoding": "gzip, deflate, br",
-                    "Accept-Language": "zh-CN,zh;q=0.9",
                 }
             )
             .with_data({"user": "zhouhuajian", "pwd": "123456"})
             .validate()
             .assert_equal("status_code", 200)
-            .assert_equal('headers."Content-Type"', "application/json")
+            # .assert_equal('headers."Content-Type"', "application/json")
+            .assert_equal('body.message', '登录成功', '登录接口登录成功的提示消息不正确')
+            .assert_equal('body.status', 1)
+            .assert_length_greater_or_equals('cookies.session', 1)
         ),
     ]
 
