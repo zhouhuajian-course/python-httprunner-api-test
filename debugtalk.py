@@ -1,18 +1,25 @@
-import time
+"""
+自定义Python函数
 
-from httprunner import __version__
+@author  : zhouhuajian
+@version : v1.0
+"""
+
+import sys
+
+# 假设Windows下运行测试环境
+# 在Linux下运行生产环境
+if sys.platform == "win32":
+    base_url = "http://127.0.0.1:5000"
+    # base_url = "http://localhost:5000"
+else:
+    base_url = "https://zhouhuajian.com"
 
 
-def get_httprunner_version():
-    return __version__
+def get_base_url():
+    """获取基础URL"""
+    return base_url
 
 
-def sum_two(m, n):
-    return m + n
-
-
-def sleep(n_secs):
-    time.sleep(n_secs)
-
-
-# C:\Users\zhouhuajian\zhouhuajian-course\httprunner-api-test
+if __name__ == '__main__':
+    print(get_base_url())

@@ -7,19 +7,18 @@ from httprunner import HttpRunner, Config, Step, RunRequest, RunTestCase
 
 class TestCaseLogin(HttpRunner):
 
-    config = Config("登录接口测试").verify(False)
+    config = Config("登录接口测试").verify(False).base_url("${get_base_url()}")
 
     teststeps = [
         Step(
             RunRequest("/api/login")
-            .post("http://127.0.0.1:5000/api/login")
+            .post("/api/login")
             .with_headers(
                 **{
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
-                    "Test": "${get_httprunner_version()}"
                 }
             )
-            .with_data({"user": "zhouhuajian", "pwd": "123456", "test": "${get_httprunner_version()}", "test2": "${sum_two(1, 2)}"})
+            .with_data({"user": "zhouhuajian", "pwd": "123456"})
             .validate()
             .assert_equal("status_code", 200)
             # .assert_equal('headers."Content-Type"', "application/json")
