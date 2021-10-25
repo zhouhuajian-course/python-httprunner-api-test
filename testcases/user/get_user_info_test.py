@@ -19,7 +19,7 @@ class TestCaseGetUserInfo(HttpRunner):
                 }
             )
             .with_cookies(
-                **{"session": "eyJ1aWQiOjF9.YV64kg.VRJ_LGQvpX8Ygv0NTUayjzB1rLc"}
+                **{"session": "${get_session_id()}"}
             )
             .validate()
             .assert_equal("status_code", 200)
