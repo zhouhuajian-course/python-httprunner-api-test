@@ -11,6 +11,24 @@ class TestCaseDelArticle(HttpRunner):
 
     teststeps = [
         Step(
+            RunRequest("/api/create_article")
+            .post("/api/create_article")
+            .with_headers(
+                **{
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+                }
+            )
+            .with_cookies(
+                **{"session": "${get_session_id()}"}
+            )
+            .with_data({"title": "测试标题", "content": "测试内容"})
+            .extract()
+            .with_jmespath("body.data.article_id", "article_id")
+            .validate()
+            .assert_equal("status_code", 200)
+            .assert_greater_or_equals("body.data.article_id", 1)
+        ),
+        Step(
             RunRequest("/api/del_article")
             .post("/api/del_article")
             .with_headers(
@@ -21,7 +39,7 @@ class TestCaseDelArticle(HttpRunner):
             .with_cookies(
                 **{"session": "${get_session_id()}"}
             )
-            .with_data({"article_id": "1"})
+            .with_data({"article_id": "$article_id", "test": "${article_id}abc123"})
             .validate()
             .assert_equal("status_code", 200)
             .assert_equal("body.message", "删除成功")
