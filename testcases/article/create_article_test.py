@@ -3,9 +3,26 @@
 
 
 from httprunner import HttpRunner, Config, Step, RunRequest, RunTestCase
+import pytest
+import csv
+import os
+
+
+with open(os.path.dirname(__file__) + "/create_article.csv", mode="r", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    data = list(reader)
+for elem in data:
+    elem['status'] = int(elem['status'])
+    elem['code'] = int(elem['code'])
+# print(data)
+# exit()
 
 
 class TestCaseCreateArticle(HttpRunner):
+
+    @pytest.mark.parametrize("param", data)
+    def test_start(self, param):
+        super().test_start(param)
 
     config = Config("发帖接口测试").verify(False).base_url("${get_base_url()}")
 
@@ -21,10 +38,14 @@ class TestCaseCreateArticle(HttpRunner):
             .with_cookies(
                 **{"session": "${get_session_id()}"}
             )
-            .with_data({"title": "测试标题", "content": "测试内容"})
+            .with_data({"title": "$title", "content": "$content"})
             .validate()
             .assert_equal("status_code", 200)
-            .assert_greater_or_equals("body.data.article_id", 1)
+            .assert_equal('body.status', '$status')
+            .assert_equal('body.message', '$message')
+            .assert_equal('body.code', '$code')
+            .assert_type_match('body.data.article_id', '$article_id_type')
+            # .assert_greater_or_equals("body.data.article_id", 1)
         ),
     ]
 
