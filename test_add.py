@@ -37,19 +37,19 @@ import csv
 #     assert num1 + num2 == sum
 
 
-# @pytest.mark.parametrize("param", [
-#     {"num1": 1, "num2": 2, "sum": 3},
-#     {"num1": 2, "num2": 3, "sum": 5},
-#     {"num1": 3, "num2": 4, "sum": 7}
-# ])
-# def test_add(param):
-#     assert param['num1'] + param['num2'] == param['sum']
-
-
-with open("test_add.csv", mode="r", encoding="utf-8") as f:
-    reader = csv.DictReader(f)
-    data = list(reader)
-@pytest.mark.parametrize("param", data)
+@pytest.mark.parametrize("param", [
+    {"num1": 1, "num2": 2, "sum": 3},
+    {"num1": 2, "num2": 3, "sum": 5},
+    {"num1": 3, "num2": 4, "sum": 7}
+])
 def test_add(param):
-    assert int(param['num1']) + int(param['num2']) == int(param['sum'])
+    assert param['num1'] + param['num2'] == param['sum']
+
+#
+# with open("test_add.csv", mode="r", encoding="utf-8") as f:
+#     reader = csv.DictReader(f)
+#     data = list(reader)
+# @pytest.mark.parametrize("param", data)
+# def test_add(param):
+#     assert int(param['num1']) + int(param['num2']) == int(param['sum'])
 

@@ -3,9 +3,21 @@
 
 
 from httprunner import HttpRunner, Config, Step, RunRequest, RunTestCase
+import pytest
 
 
 class TestCaseLogin(HttpRunner):
+
+    @pytest.mark.parametrize("param", [
+        # 反例 账号不填 密码正确
+        {"user": "", "pwd": "123456", "status": 0, "message": "请输入账号", "code": 1001, "session_type": None},
+        # 反例 账号正确 密码错误
+        {"user": "zhouhuajian", "pwd": "123", "status": 0, "message": "账号或密码不正确", "code": 1003, "session_type": None},
+        # 正例 账号正确 密码正确
+        {"user": "zhouhuajian", "pwd": "123456", "status": 1, "message": "登录成功", "code": 0, "session_type": str},
+    ])
+    def test_start(self, param):
+        super().test_start(param)
 
     config = Config("登录接口测试").verify(False).base_url("${get_base_url()}")
 
@@ -18,13 +30,15 @@ class TestCaseLogin(HttpRunner):
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
                 }
             )
-            .with_data({"user": "zhouhuajian", "pwd": "123456"})
+            .with_data({"user": "$user", "pwd": "$pwd"})
             .validate()
             .assert_equal("status_code", 200)
             # .assert_equal('headers."Content-Type"', "application/json")
-            .assert_equal('body.message', '登录成功', '登录接口登录成功的提示消息不正确')
-            .assert_equal('body.status', 1)
-            .assert_length_greater_or_equals('cookies.session', 1)
+            .assert_equal('body.status', '$status')
+            .assert_equal('body.message', '$message')
+            .assert_equal('body.code', '$code')
+            # .assert_length_greater_or_equals('cookies.session', 1)
+            .assert_type_match('cookies.session', '$session_type')
         ),
     ]
 
