@@ -8,6 +8,7 @@ import pytest
 
 class TestCaseLogin(HttpRunner):
 
+    @pytest.mark.skip("登录接口暂时废弃")
     @pytest.mark.parametrize("param", [
         # 反例 账号不填 密码正确
         {"user": "", "pwd": "123456", "status": 0, "message": "请输入账号", "code": 1001, "session_type": None},
