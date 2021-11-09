@@ -38,6 +38,7 @@
 1. 使用pytest-html插件实现图形化测试报告；
 2. 优化pytest-html图形化测试报告生成方式；
 3. 使用allure和allure-pytest实现图形化测试报告；
+4. 优化allure图形化测试报告生成方式；
 
 
 
