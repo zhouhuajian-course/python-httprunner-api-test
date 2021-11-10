@@ -6,6 +6,12 @@ from httprunner import HttpRunner, Config, Step, RunRequest, RunTestCase
 
 
 class TestCaseGetUserInfo(HttpRunner):
+    #
+    # def test_add(self):
+    #     raise AssertionError
+    #
+    # def test_add_2(self):
+    #     raise ValueError
 
     config = Config("测试获取用户信息接口").verify(False).base_url("${get_base_url()}")
 
@@ -23,6 +29,7 @@ class TestCaseGetUserInfo(HttpRunner):
             )
             .validate()
             .assert_equal("status_code", 200)
+            # .assert_equal("status_code", 2000)
         ),
     ]
 
