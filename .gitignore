@@ -1,8 +1,11 @@
-.env
+# .env
 reports/*
 __pycache__/*
 *.pyc
 .python-version
 logs/*
 
+tmp/*
 .idea
+
+!.gitkeep
