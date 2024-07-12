@@ -36,7 +36,4 @@ HttpRunner底层封装了Pytest和Requests，可用接口har文件快速生成�
 
 ![allure测试报告](image/allure测试报告.png)
 
-备注
-----
 
-课程代码等内容，在课程资料里面。
